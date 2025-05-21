@@ -386,3 +386,68 @@ select * from Staff where Job_Title = 'Branch Manager'
 -- SELECT C.C_ID,C.C_Name,C.Email,R.rating FROM Customer C LEFT JOIN Reviews R ON C.C_ID = R.C_ID;
 
 ```
+
+-------------------------
+
+### Bank Database – JOIN Queries 
+1. Display branch ID, name, and the name of the employee who manages it. 
+```sql
+select * from Employee
+Select * from Branch
+
+select B.Branch_ID , B.Branch_Address , E.E_Name from  Branch B inner join Employee E on B.Branch_ID = E.Branch_ID
+```
+2. Display branch names and the accounts opened under each. 
+```sql
+
+```
+3. Display full customer details along with their loans. 
+```sql
+select * from Loans
+select * from Customer
+select C.* from Customer C inner join Loans L on L.Customer_ID = C.Customer_ID
+```
+4. Display loan records where the loan office is in 'Alexandria' or 'Giza'. 
+```sql
+Select L.* from Loans L where L.L_Type in ('Personal' ,'Education');
+```
+5. Display account data where the type starts with "S" (e.g., "Savings"). 
+```sql
+select * from Accounts where A_Type like 'S%'
+```
+6. List customers with accounts having balances between 20,000 and 50,000.
+```sql
+select C.* from Customer C inner join Accounts A on A.Customer_ID = C.Customer_ID where A.Balance between 200 and 500;
+```
+7. Retrieve customer names who borrowed more than 100,000 LE from 'Cairo Main Branch'. 
+```sql
+ select C.CName from Customer C inner join Accounts A on A.Customer_ID = C.Customer_ID where A.Balance > 100 and B.Branch_Address= 'Cairo Main Branch'
+```
+8. Find all customers assisted by employee "Amira Khaled". 
+```sql
+select C.* from Customer C inner join Employee E on E.Employee_ID = C.Employee_ID  where E_Name = 'Amira Khaled'
+```
+9. Display each customer’s name and the accounts they hold, sorted by account type. 
+```sql
+
+select C.CName as 'Customer Name' ,A.Account_Number as 'Account Number' from Customer C inner join Accounts A on A.Customer_ID = C.Customer_ID order by A.A_Type
+```
+10.  For each loan issued in Cairo, show loan ID, customer name, employee handling it, and branch name. 
+```sql
+SELECT L.Loans_ID,C.CName, E.E_Name AS handled_by,b.Branch_Address
+FROM Loans L inner join Customer C ON L.customer_id = C.customer_id
+inner join Employee E ON L.employee_id = E.employee_id
+inner join Branch B ON L.Loans_ID = B.branch_id
+WHERE B.Branch_Address = 'Cairo';
+```
+11.  Display all employees who manage any branch. 
+```sql
+SELECT E.Employee_ID,E.E_Name
+FROM Employee E
+inner join Branch B ON E.Employee_ID = B.Manager_id;
+```
+12.  Display all customers and their transactions, even if some customers have no transactions yet.
+
+```sql
+SELECT C.Customer_ID,C.CName,T.Transactions_ID,T.amount,T.T_Date FROM Customer C LEFT JOIN Transactions T ON C.Customer_ID = T.Customer_ID;
+```
