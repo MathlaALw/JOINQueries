@@ -451,3 +451,88 @@ inner join Branch B ON E.Employee_ID = B.Manager_id;
 ```sql
 SELECT C.Customer_ID,C.CName,T.Transactions_ID,T.amount,T.T_Date FROM Customer C LEFT JOIN Transactions T ON C.Customer_ID = T.Customer_ID;
 ```
+
+-------------------------------------
+
+### Library Database – JOIN Queries 
+
+1. Display library ID, name, and the name of the manager. 
+```sql
+
+select L.L_ID,L.L_Name from Library L inner join Staff S on S.L_ID = L.L_ID
+```
+2. Display library names and the books available in each one. 
+```sql
+
+select L.L_Name , B.Title from Library L inner join LibraryBook LB on L.L_ID=LB.L_ID
+inner join Book B on B.Book_ID= LB.Book_ID
+```
+3. Display all member data along with their loan history. 
+```sql
+select M.* , L.* from Members M inner join Loan L on M.M_ID = L.M_ID 
+```
+4. Display all books located in 'Zamalek' or 'Downtown'.
+```sql
+-- select B.* from Book B inner join Members M on M.M_ID =B.M_ID inner join Library L on L.L_ID = M.M_ID where L.location IN ('Zamalek', 'Downtown')
+```
+5. Display all books whose titles start with 'T'. 
+```sql
+select B.* from Book B where b.Title like 'T%'
+```
+6. List members who borrowed books priced between 100 and 300 LE. 
+```sql
+
+select M.* from Members M inner join Book B on B.M_ID = M.M_ID where B.Price between 100 and 300;
+
+```
+7. Retrieve members who borrowed and returned books titled 'The Alchemist'. 
+```sql
+
+select M.* from Members M inner join Book B on B.M_ID= M.M_ID where B.Title ='The Alchemist'
+```
+8. Find all members assisted by librarian "Sarah Fathy". 
+```sql
+-- select M.* from Members M inner join Staff S on S.M_ID= M.M_ID where B.Title ='The Alchemist'
+```
+9. Display each member’s name and the books they borrowed, ordered by book title. 
+```sql
+SELECT 
+    m.member_name,
+    b.book_title
+FROM 
+    Members m
+JOIN 
+    Borrowings br ON m.member_id = br.member_id
+JOIN 
+    Books b ON br.book_id = b.book_id
+ORDER BY 
+    b.book_title;
+
+```
+10.  For each book located in 'Cairo Branch', show title, library name, manager, and shelf info. 
+```sql
+SELECT 
+    b.book_title,
+    l.library_name,
+    s.staff_name AS manager_name,
+    b.shelf_info
+FROM 
+    Books b
+JOIN 
+    Libraries l ON b.library_id = l.library_id
+JOIN 
+    Staff s ON l.manager_id = s.staff_id
+WHERE 
+    l.branch_name = 'Cairo Branch';
+```
+11.  Display all staff members who manage libraries. 
+```sql
+-- SELECT s.Staff_ID,s.FName FROM Staff s inner join Library l ON s.staff_id = l.manager_id;
+```
+12.  Display all members and their reviews, even if some didn’t submit any review yet. 
+```sql
+
+SELECT M.M_ID,M.FName + ' '+ M.LName as 'Member Name ',RB.Comments, RB.Rating
+FROM Members M LEFT JOIN ReviewBook RB ON m.M_ID = RB.M_ID;
+
+```
